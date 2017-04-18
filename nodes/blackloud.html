@@ -1,0 +1,35 @@
+<script type="text/javascript">
+    RED.nodes.registerType('blkd-login', {
+        category: 'function',
+        color: '#a6bbcf',
+        defaults: {
+            username: {
+                value: "",
+                required: true
+            },
+            password: {
+                value: "",
+                required: true
+            }
+        },
+        inputs: 1,
+        outputs: 1,
+        icon: "file.png",
+        label: function() {
+            return this.username || "Blackloud Login";
+        }
+    });
+</script>
+
+<script type="text/x-red" data-template-name="blkd-login">
+    <div class="form-row">
+        <label for="node-input-username"><i class="icon-tag"></i> Username or E-mail</label>
+        <input type="text" id="node-input-username" placeholder="Name">
+        <label for="node-input-password"><i class="icon-tag"></i> Password</label>
+        <input type="password" id="node-input-password" placeholder="Name">
+    </div>
+</script>
+
+<script type="text/x-red" data-help-name="blkd-login">
+    <p>A node that can login Blackloud account.</p>
+</script>

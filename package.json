@@ -16,13 +16,16 @@
     },
     "keywords": [
         "node-red",
-        "lower-case",
-        "upper-case"
+        "blackloud",
+        "web api"
     ],
     "author": "winston_hsieh",
     "license": "MIT",
     "bugs": {
         "url": "https://github.com/heretse/node-red-contrib-blackloud-api/issues"
     },
-    "homepage": "https://github.com/heretse/node-red-contrib-blackloud-api#readme"
+    "homepage": "https://github.com/heretse/node-red-contrib-blackloud-api#readme",
+    "dependencies": {
+        "request-digest": "^1.0.9"
+    }
 }
