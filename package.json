@@ -1,0 +1,28 @@
+{
+    "name": "node-red-contrib-blackloud-api",
+    "version": "1.0.0",
+    "description": "Provide some nodes that supports Blackloud web APIs.",
+    "node-red": {
+        "nodes": {
+            "mind-game": "nodes/blackloud.js"
+        }
+    },
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/heretse/node-red-contrib-blackloud-api.git"
+    },
+    "keywords": [
+        "node-red",
+        "lower-case",
+        "upper-case"
+    ],
+    "author": "winston_hsieh",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/heretse/node-red-contrib-blackloud-api/issues"
+    },
+    "homepage": "https://github.com/heretse/node-red-contrib-blackloud-api#readme"
+}

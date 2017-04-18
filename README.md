@@ -1,2 +1,2 @@
 # node-red-contrib-blackloud-api
-Provide some nodes that supports Blackloud web APIs.
+Provide some nodes that support Blackloud web APIs.
