@@ -13,7 +13,7 @@ module.exports = function(RED) {
         this.on('input', function(msg) {
             var _userInfo = context.get('userInfo');
             var _globalSession = context.get('globalSession');
-            if (_globalSession && _globalSession.expiration.getTime() > (new Date()).getTime()) {
+            if (_globalSession && (new Date(_globalSession.expiration)).getTime() > (new Date()).getTime()) {
                 msg.payload = { info: _userInfo, global_session: _globalSession };
                 node.send(msg);
                 return;
