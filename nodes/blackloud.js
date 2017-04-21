@@ -60,7 +60,8 @@ module.exports = function(RED) {
         node.cmdValue = config.cmdValue;
 
         this.on('input', function(msg) {
-            node.send(TlvCommand.generateTLVcmd(parseInt(node.cmdType, 16), parseInt(node.cmdClass, 16), node.cmdName, node.cmdValue));
+            msg.payload = TlvCommand.generateTLVcmd(parseInt(node.cmdType, 16), parseInt(node.cmdClass, 16), node.cmdName, node.cmdValue);
+            node.send(msg);
         });
     }
 

@@ -64,7 +64,7 @@
         outputs: 1,
         icon: "file.png",
         label: function() {
-            return "BLKD Command: " + this.command || "BLKD Command";
+            return "BLKD Command: " + this.cmdName || "BLKD Command";
         }
     });
 </script>
@@ -74,7 +74,7 @@
         <div class="form-row">
             <label for="node-input-cmdType"><i class="icon-tag"></i> Type</label>
             <input type="text" id="node-input-cmdType" placeholder="Type">
-        </div>>
+        </div>
         <div class="form-row">
             <label for="node-input-cmdClass"><i class="icon-tag"></i> Class</label>
             <input type="text" id="node-input-cmdClass" placeholder="Class">
