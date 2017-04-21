@@ -1,4 +1,5 @@
 let _server_url = "https://api.blackloud.com";
+let TlvCommand = require('../lib/tlv-command');
 
 module.exports = function(RED) {
     function DoBlkdLogin(config) {
@@ -49,13 +50,19 @@ module.exports = function(RED) {
     }
     RED.nodes.registerType("blkd-login", DoBlkdLogin);
 
-    function SendTlvCommand(config) {
-        this.on('input', function(msg) {
-            RED.nodes.createNode(this, config);
-            var node = this;
+    function GenerateTlvCommand(config) {
+        RED.nodes.createNode(this, config);
+        var node = this;
 
+        node.type = config.type;
+        node.class = config.class;
+        node.cmdName = config.command;
+        node.cmdValue = config.value;
+
+        this.on('input', function(msg) {
+            node.send(TlvCommand.generateTLVcmd(parseInt(node.type, 16), parseInt(node.class, 16), node.cmdName, node.cmdValue));
         });
     }
 
-    RED.nodes.registerType("blkd-send-tlv-command", SendTlvCommand);
+    RED.nodes.registerType("blkd-generate-tlv-command", GenerateTlvCommand);
 }

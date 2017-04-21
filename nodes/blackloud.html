@@ -33,3 +33,51 @@
 <script type="text/x-red" data-help-name="blkd-login">
     <p>A node that can login Blackloud account.</p>
 </script>
+
+<script type="text/javascript">
+    RED.nodes.registerType('blkd-generate-tlv-command', {
+        category: 'Blackloud',
+        color: '#92c6de',
+        defaults: {
+            type: {
+                value: "0x0001",
+                required: true
+            },
+            class: {
+                value: "0x0001",
+                    required: true
+            },
+            command: {
+                value: "set_power",
+                required: true
+            },
+            value: {
+                value: "",
+                required: false
+            }
+        },
+        inputs: 1,
+        outputs: 1,
+        icon: "file.png",
+        label: function() {
+            return "BLKD Command: " + this.command || "BLKD Command";
+        }
+    });
+</script>
+
+<script type="text/x-red" data-template-name="blkd-generate-tlv-command">
+    <div class="form-row">
+        <label for="node-input-type"><i class="icon-tag"></i> Type</label>
+        <input type="text" id="node-input-type" placeholder="Type">
+        <label for="node-input-class"><i class="icon-tag"></i> Class</label>
+        <input type="text" id="node-input-class" placeholder="Class">
+        <label for="node-input-command"><i class="icon-tag"></i> Command</label>
+        <input type="text" id="node-input-command" placeholder="Command">
+        <label for="node-input-value"><i class="icon-tag"></i> Value</label>
+        <input type="text" id="node-input-value" placeholder="Value">
+    </div>
+</script>
+
+<script type="text/x-red" data-help-name="blkd-generate-tlv-command">
+    <p>A node that can generate TLV command.</p>
+</script>
