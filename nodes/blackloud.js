@@ -54,13 +54,13 @@ module.exports = function(RED) {
         RED.nodes.createNode(this, config);
         var node = this;
 
-        node.type = config.type;
-        node.class = config.class;
-        node.cmdName = config.command;
-        node.cmdValue = config.value;
+        node.cmdType = config.cmdType;
+        node.cmdClass = config.cmdClass;
+        node.cmdName = config.cmdName;
+        node.cmdValue = config.cmdValue;
 
         this.on('input', function(msg) {
-            node.send(TlvCommand.generateTLVcmd(parseInt(node.type, 16), parseInt(node.class, 16), node.cmdName, node.cmdValue));
+            node.send(TlvCommand.generateTLVcmd(parseInt(node.cmdType, 16), parseInt(node.cmdClass, 16), node.cmdName, node.cmdValue));
         });
     }
 

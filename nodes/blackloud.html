@@ -39,19 +39,19 @@
         category: 'Blackloud',
         color: '#92c6de',
         defaults: {
-            "type": {
-                value: "",
+            cmdType: {
+                value: "0x0001",
                 required: true
             },
-            "class": {
-                value: "",
+            cmdClass: {
+                value: "0x0001",
                 required: true
             },
-            command: {
+            cmdName: {
                 value: "set_power",
                 required: true
             },
-            value: {
+            cmdValue: {
                 value: "",
                 required: false
             }
@@ -67,14 +67,17 @@
 
 <script type="text/x-red" data-template-name="blkd-generate-tlv-command">
     <div class="form-row">
-        <label for="node-input-type"><i class="icon-tag"></i> Type</label>
-        <input type="text" id="node-input-type" placeholder="Type">
-        <label for="node-input-class"><i class="icon-tag"></i> Class</label>
-        <input type="text" id="node-input-class" placeholder="Class">
-        <label for="node-input-command"><i class="icon-tag"></i> Command</label>
-        <input type="text" id="node-input-command" placeholder="Command">
-        <label for="node-input-value"><i class="icon-tag"></i> Value</label>
-        <input type="text" id="node-input-value" placeholder="Value">
+        <label for="node-input-cmdType"><i class="icon-tag"></i> Type</label>
+        <input type="text" id="node-input-cmdType" placeholder="Type">
+        <br/>
+        <label for="node-input-cmdClass"><i class="icon-tag"></i> Class</label>
+        <input type="text" id="node-input-cmdClass" placeholder="Class">
+        <br/>
+        <label for="node-input-cmdName"><i class="icon-tag"></i> Command</label>
+        <input type="text" id="node-input-cmdName" placeholder="Command">
+        <br/>
+        <label for="node-input-cmdValue"><i class="icon-tag"></i> Value</label>
+        <input type="text" id="node-input-cmdValue" placeholder="Value">
     </div>
 </script>
 
