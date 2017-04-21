@@ -80,6 +80,8 @@ module.exports = function(RED) {
         }
 
         this.on('input', function(msg) {
+            var preRequestTimestamp = process.hrtime();
+            node.status({ fill: "blue", shape: "dot", text: "httpin.status.requesting" });
             var url = _server_url + "/mec_msg/v1/send";
 
             var opts = urllib.parse(url);
