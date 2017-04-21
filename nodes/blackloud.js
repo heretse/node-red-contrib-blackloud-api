@@ -73,6 +73,12 @@ module.exports = function(RED) {
         RED.nodes.createNode(this, config);
         var node = this;
 
+        if (RED.settings.httpRequestTimeout) {
+            this.reqTimeout = parseInt(RED.settings.httpRequestTimeout) || 120000;
+        } else {
+            this.reqTimeout = 120000;
+        }
+
         this.on('input', function(msg) {
             var url = _server_url + "/mec_msg/v1/send";
 
