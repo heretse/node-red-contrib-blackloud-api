@@ -83,10 +83,14 @@
             <label for="node-input-cmdName"><i class="icon-tag"></i> Command</label>
             <input type="text" id="node-input-cmdName" placeholder="Command">
         </div>
-        <div class="form-row">
+        <div class="form-row" style="margin-bottom: 0px;">
             <label for="node-input-cmdValue"><i class="icon-tag"></i> Value</label>
-            <textarea style="height: 0px; min-height: 150px;" class="node-text-editor" id="node-input-cmdValue" placeholder="Value">
-            </textarea>
+        </div>
+        <div class="form-row node-text-editor-row">
+            <div style="height: 0px; min-height: 150px;" class="node-text-editor" id="node-input-cmdValue-editor">
+                <textarea style="height: 0px; min-height: 150px; width: 100%;" class="node-text-editor" id="node-input-cmdValue" placeholder="Value" wrap="on" autocorrect="off" autocapitalize="off" spellcheck="false">
+                </textarea>
+            </div>
         </div>
     </div>
 </script>
