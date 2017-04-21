@@ -23,10 +23,14 @@
 
 <script type="text/x-red" data-template-name="blkd-login">
     <div class="form-row">
-        <label for="node-input-username"><i class="icon-tag"></i> Username or E-mail</label>
-        <input type="text" id="node-input-username" placeholder="Username">
-        <label for="node-input-password"><i class="icon-tag"></i> Password</label>
-        <input type="password" id="node-input-password" placeholder="Password">
+        <div class="form-row">
+            <label for="node-input-username"><i class="icon-tag"></i> Username or E-mail</label>
+            <input type="text" id="node-input-username" placeholder="Username">
+        </div>
+        <div class="form-row">
+            <label for="node-input-password"><i class="icon-tag"></i> Password</label>
+            <input type="password" id="node-input-password" placeholder="Password">
+        </div>
     </div>
 </script>
 
@@ -67,17 +71,23 @@
 
 <script type="text/x-red" data-template-name="blkd-generate-tlv-command">
     <div class="form-row">
-        <label for="node-input-cmdType"><i class="icon-tag"></i> Type</label>
-        <input type="text" id="node-input-cmdType" placeholder="Type">
-        <br/>
-        <label for="node-input-cmdClass"><i class="icon-tag"></i> Class</label>
-        <input type="text" id="node-input-cmdClass" placeholder="Class">
-        <br/>
-        <label for="node-input-cmdName"><i class="icon-tag"></i> Command</label>
-        <input type="text" id="node-input-cmdName" placeholder="Command">
-        <br/>
-        <label for="node-input-cmdValue"><i class="icon-tag"></i> Value</label>
-        <input type="text" id="node-input-cmdValue" placeholder="Value">
+        <div class="form-row">
+            <label for="node-input-cmdType"><i class="icon-tag"></i> Type</label>
+            <input type="text" id="node-input-cmdType" placeholder="Type">
+        </div>>
+        <div class="form-row">
+            <label for="node-input-cmdClass"><i class="icon-tag"></i> Class</label>
+            <input type="text" id="node-input-cmdClass" placeholder="Class">
+        </div>
+        <div class="form-row">
+            <label for="node-input-cmdName"><i class="icon-tag"></i> Command</label>
+            <input type="text" id="node-input-cmdName" placeholder="Command">
+        </div>
+        <div class="form-row">
+            <label for="node-input-cmdValue"><i class="icon-tag"></i> Value</label>
+            <textarea style="height: 0px; min-height: 150px;" class="node-text-editor" id="node-input-cmdValue" placeholder="Value">
+            </textarea>
+        </div>
     </div>
 </script>
 
