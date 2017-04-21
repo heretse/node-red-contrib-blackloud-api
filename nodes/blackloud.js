@@ -117,15 +117,13 @@ module.exports = function(RED) {
                             node.metric("size.bytes", msg, res.client.bytesRead);
                         }
                     }
-                    if (node.ret === "bin") {
-                        msg.payload = new Buffer(msg.payload, "binary");
-                    } else if (node.ret === "obj") {
-                        try {
-                            msg.payload = JSON.parse(msg.payload);
-                        } catch (e) {
-                            node.warn(RED._("httpin.errors.json-error"));
-                        }
+
+                    try {
+                        msg.payload = JSON.parse(msg.payload);
+                    } catch (e) {
+                        node.warn(RED._("httpin.errors.json-error"));
                     }
+
                     node.send(msg);
                     node.status({});
                 });
