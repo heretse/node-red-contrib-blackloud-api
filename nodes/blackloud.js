@@ -1,7 +1,9 @@
-let _server_url = "https://api.blackloud.com";
-let TlvCommand = require('../lib/tlv-command');
-
 module.exports = function(RED) {
+    let _server_url = "https://api.blackloud.com";
+    let TlvCommand = require('../lib/tlv-command');
+    var https = require("follow-redirects").https;
+    var urllib = require("url");
+
     function DoBlkdLogin(config) {
         RED.nodes.createNode(this, config);
         var node = this;
@@ -66,4 +68,83 @@ module.exports = function(RED) {
     }
 
     RED.nodes.registerType("blkd-generate-tlv-command", GenerateTlvCommand);
+
+    function SendMessage(config) {
+        RED.nodes.createNode(this, config);
+        var node = this;
+
+        this.on('input', function(msg) {
+            var url = _server_url + "/mec_msg/v1/send";
+
+            var opts = urllib.parse(url);
+            opts.method = "POST";
+            opts.headers = { "content-type": "application/json" };
+
+            var payload = JSON.stringify(msg.payload);
+
+            if (opts.headers['content-length'] == null) {
+                if (Buffer.isBuffer(payload)) {
+                    opts.headers['content-length'] = payload.length;
+                } else {
+                    opts.headers['content-length'] = Buffer.byteLength(payload);
+                }
+            }
+
+            var req = https.request(opts, function(res) {
+                res.setEncoding('utf8');
+                msg.statusCode = res.statusCode;
+                msg.headers = res.headers;
+                msg.payload = "";
+
+                res.on('data', function(chunk) {
+                    msg.payload += chunk;
+                });
+
+                res.on('end', function() {
+                    if (node.metric()) {
+                        // Calculate request time
+                        var diff = process.hrtime(preRequestTimestamp);
+                        var ms = diff[0] * 1e3 + diff[1] * 1e-6;
+                        var metricRequestDurationMillis = ms.toFixed(3);
+                        node.metric("duration.millis", msg, metricRequestDurationMillis);
+                        if (res.client && res.client.bytesRead) {
+                            node.metric("size.bytes", msg, res.client.bytesRead);
+                        }
+                    }
+                    if (node.ret === "bin") {
+                        msg.payload = new Buffer(msg.payload, "binary");
+                    } else if (node.ret === "obj") {
+                        try {
+                            msg.payload = JSON.parse(msg.payload);
+                        } catch (e) {
+                            node.warn(RED._("httpin.errors.json-error"));
+                        }
+                    }
+                    node.send(msg);
+                    node.status({});
+                });
+            });
+
+            req.setTimeout(node.reqTimeout, function() {
+                node.error(RED._("common.notification.errors.no-response"), msg);
+                setTimeout(function() {
+                    node.status({ fill: "red", shape: "ring", text: "common.notification.errors.no-response" });
+                }, 10);
+                req.abort();
+            });
+            req.on('error', function(err) {
+                node.error(err, msg);
+                msg.payload = err.toString() + " : " + url;
+                msg.statusCode = err.code;
+                node.send(msg);
+                node.status({ fill: "red", shape: "ring", text: err.code });
+            });
+            if (payload) {
+                req.write(payload);
+            }
+            req.end();
+        });
+    }
+
+    RED.nodes.registerType("blkd-send-message", SendMessage);
 }

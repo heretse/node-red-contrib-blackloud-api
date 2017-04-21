@@ -98,3 +98,32 @@
 <script type="text/x-red" data-help-name="blkd-generate-tlv-command">
     <p>A node that can generate TLV command.</p>
 </script>
+
+<script type="text/javascript">
+    RED.nodes.registerType('blkd-send-message', {
+        category: 'Blackloud',
+        color: '#92c6de',
+        defaults: {
+            name: {
+                value: ""
+            }
+        },
+        inputs: 1,
+        outputs: 1,
+        icon: "file.png",
+        label: function() {
+            return this.name || "BLKD Send Message";
+        }
+    });
+</script>
+
+<script type="text/x-red" data-template-name="blkd-send-message">
+    <div class="form-row">
+        <label for="node-input-name"><i class="icon-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+</script>
+
+<script type="text/x-red" data-help-name="blkd-send-message">
+    <p>A node that can send message.</p>
+</script>
