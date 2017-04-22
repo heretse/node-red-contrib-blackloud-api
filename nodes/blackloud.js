@@ -1,7 +1,5 @@
 module.exports = function(RED) {
     let _server_url = "https://api.blackloud.com";
-    let _api_key = "spp-5R6XG1CA0E";
-    let _api_secret = "spp-5R6XG1CA0E";
 
     let TlvCommand = require('../lib/tlv-command');
     var https = require("follow-redirects").https;
@@ -11,8 +9,8 @@ module.exports = function(RED) {
     function DoBlkdLogin(config) {
         RED.nodes.createNode(this, config);
         var node = this;
-        node.username = config.username;
-        node.password = config.password;
+        this.username = config.username;
+        this.password = config.password;
 
         // Access the node's context object
         var context = node.context();
@@ -60,10 +58,10 @@ module.exports = function(RED) {
         RED.nodes.createNode(this, config);
         var node = this;
 
-        node.cmdType = config.cmdType;
-        node.cmdClass = config.cmdClass;
-        node.cmdName = config.cmdName;
-        node.cmdValue = config.cmdValue;
+        this.cmdType = config.cmdType;
+        this.cmdClass = config.cmdClass;
+        this.cmdName = config.cmdName;
+        this.cmdValue = config.cmdValue;
 
         this.on('input', function(msg) {
             msg.payload = TlvCommand.generateTLVcmd(parseInt(node.cmdType, 16), parseInt(node.cmdClass, 16), node.cmdName, node.cmdValue);
@@ -76,6 +74,9 @@ module.exports = function(RED) {
     function SendMessage(config) {
         RED.nodes.createNode(this, config);
         var node = this;
+
+        this.api_key = config.apiKey;
+        this.api_secret = config.apiSecret;
 
         if (RED.settings.httpRequestTimeout) {
             this.reqTimeout = parseInt(RED.settings.httpRequestTimeout) || 120000;
@@ -93,16 +94,17 @@ module.exports = function(RED) {
             opts.headers = { "content-type": "application/json" };
 
             if (!msg.payload.api_key) {
-                msg.payload.api_key = _api_key;
+                msg.payload.api_key = node.api_key;
             }
 
             if (!msg.payload.api_token) {
                 var time = "" + (new Date()).getTime();
-                var api_token = CryptoJS.SHA1(_api_secret + time);
+                var api_token = CryptoJS.SHA1(node.api_secret + time);
 
                 msg.payload.api_token = api_token;
                 msg.payload.time = time;
             }
+
             var payload = JSON.stringify(msg.payload);
 
             if (opts.headers['content-length'] == null) {

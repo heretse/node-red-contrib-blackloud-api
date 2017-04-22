@@ -24,11 +24,11 @@
 <script type="text/x-red" data-template-name="blkd-login">
     <div class="form-row">
         <div class="form-row">
-            <label for="node-input-username"><i class="icon-tag"></i> Username or E-mail</label>
+            <label for="node-input-username"><i class="fa fa-list"></i> Username or E-mail</label>
             <input type="text" id="node-input-username" placeholder="Username">
         </div>
         <div class="form-row">
-            <label for="node-input-password"><i class="icon-tag"></i> Password</label>
+            <label for="node-input-password"><i class="fa fa-list"></i> Password</label>
             <input type="password" id="node-input-password" placeholder="Password">
         </div>
     </div>
@@ -72,19 +72,19 @@
 <script type="text/x-red" data-template-name="blkd-generate-tlv-command">
     <div class="form-row">
         <div class="form-row">
-            <label for="node-input-cmdType"><i class="icon-tag"></i> Type</label>
+            <label for="node-input-cmdType"><i class="fa fa-list"></i> Type</label>
             <input type="text" id="node-input-cmdType" placeholder="Type">
         </div>
         <div class="form-row">
-            <label for="node-input-cmdClass"><i class="icon-tag"></i> Class</label>
+            <label for="node-input-cmdClass"><i class="fa fa-list"></i> Class</label>
             <input type="text" id="node-input-cmdClass" placeholder="Class">
         </div>
         <div class="form-row">
-            <label for="node-input-cmdName"><i class="icon-tag"></i> Command</label>
+            <label for="node-input-cmdName"><i class="fa fa-list"></i> Command</label>
             <input type="text" id="node-input-cmdName" placeholder="Command">
         </div>
         <div class="form-row" style="margin-bottom: 0px;">
-            <label for="node-input-cmdValue"><i class="icon-tag"></i> Value</label>
+            <label for="node-input-cmdValue"><i class="fa fa-list"></i> Value</label>
         </div>
         <div class="form-row node-text-editor-row">
             <div style="height: 0px; min-height: 150px;" class="node-text-editor" id="node-input-cmdValue-editor">
@@ -104,6 +104,14 @@
         category: 'Blackloud',
         color: '#92c6de',
         defaults: {
+            apiKey: {
+                value: "",
+                required: true
+            },
+            apiSecret: {
+                value: "",
+                required: true
+            },
             name: {
                 value: ""
             }
@@ -118,6 +126,14 @@
 </script>
 
 <script type="text/x-red" data-template-name="blkd-send-message">
+    <div class="form-row">
+        <label for="node-input-apiKey"><i class="fa fa-list"></i> API Key</label>
+        <input type="text" id="node-input-apiKey" placeholder="API Key">
+    </div>
+    <div class="form-row">
+        <label for="node-input-apiSecret"><i class="fa fa-list"></i> API Secret</label>
+        <input type="text" id="node-input-apiSecret" placeholder="API Secret">
+    </div>
     <div class="form-row">
         <label for="node-input-name"><i class="icon-tag"></i> Name</label>
         <input type="text" id="node-input-name" placeholder="Name">
