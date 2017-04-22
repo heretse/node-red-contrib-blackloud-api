@@ -1,8 +1,12 @@
 module.exports = function(RED) {
     let _server_url = "https://api.blackloud.com";
+    let _api_key = "spp-5R6XG1CA0E";
+    let _api_secret = "spp-5R6XG1CA0E";
+
     let TlvCommand = require('../lib/tlv-command');
     var https = require("follow-redirects").https;
     var urllib = require("url");
+    var CryptoJS = require("crypto-js");
 
     function DoBlkdLogin(config) {
         RED.nodes.createNode(this, config);
@@ -88,6 +92,17 @@ module.exports = function(RED) {
             opts.method = "POST";
             opts.headers = { "content-type": "application/json" };
 
+            if (!msg.payload.api_key) {
+                msg.payload.api_key = _api_key;
+            }
+
+            if (!msg.payload.api_token) {
+                var time = "" + (new Date()).getTime();
+                var api_token = CryptoJS.SHA1(_api_secret + time);
+
+                msg.payload.api_token = api_token;
+                msg.payload.time = time;
+            }
             var payload = JSON.stringify(msg.payload);
 
             if (opts.headers['content-length'] == null) {
