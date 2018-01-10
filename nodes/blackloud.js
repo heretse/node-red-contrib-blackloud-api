@@ -9,6 +9,8 @@ module.exports = function(RED) {
     function DoBlkdLogin(config) {
         RED.nodes.createNode(this, config);
         var node = this;
+        
+        this.serverUrl = config.serverUrl;
         this.username = config.username;
         this.password = config.password;
 
@@ -30,7 +32,7 @@ module.exports = function(RED) {
             // call login api
             var digestRequest = require('request-digest')(node.username, node.password);
             digestRequest.request({
-                host: _server_url,
+                host: (node.serverUrl)?"https://" + node.serverUrl:_server_url,
                 path: '/v1/user/login',
                 method: 'GET',
                 port: 443,
@@ -88,6 +90,10 @@ module.exports = function(RED) {
             var preRequestTimestamp = process.hrtime();
             node.status({ fill: "blue", shape: "dot", text: "httpin.status.requesting" });
             var url = _server_url + "/mec_msg/v1/send";
+
+            if (msg.url) {
+                url = msg.url;
+            }
 
             var opts = urllib.parse(url);
             opts.method = "POST";
