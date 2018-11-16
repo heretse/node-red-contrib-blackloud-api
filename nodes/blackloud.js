@@ -40,7 +40,7 @@ module.exports = function(RED) {
             }, function(error, response, body) {
                 if (error) {
                     msg.payload = error;
-                    this.status({ fill: "red", shape: "ring", text: "login failed" });
+                    node.status({ fill: "red", shape: "ring", text: "login failed" });
                     node.send(msg);
                     return;
                 }
