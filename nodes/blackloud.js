@@ -29,8 +29,18 @@ module.exports = function(RED) {
             context.set('userInfo', null);
             context.set('globalSession', null);
 
+            let _username = node.username;
+            if (msg.payload.username) {
+                _username = msg.payload.username;
+            }
+
+            let _password = node.password;
+            if (msg.payload.password) {
+                _password = msg.payload.password;
+            }
+
             // call login api
-            var digestRequest = require('request-digest')(node.username, node.password);
+            var digestRequest = require('request-digest')(_username, _password);
             digestRequest.request({
                 host: (node.serverUrl)?"https://" + node.serverUrl:_server_url,
                 path: '/v1/user/login',
