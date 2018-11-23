@@ -1,6 +1,6 @@
 {
     "name": "node-red-contrib-blackloud-api",
-    "version": "1.0.1",
+    "version": "1.1.0",
     "description": "Provide some nodes that supports Blackloud web APIs.",
     "node-red": {
         "nodes": {

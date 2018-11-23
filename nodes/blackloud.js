@@ -89,6 +89,8 @@ module.exports = function(RED) {
 
         this.api_key = config.apiKey;
         this.api_secret = config.apiSecret;
+        this.user_token = config.userToken;
+        this.uri = config.uri;
 
         if (RED.settings.httpRequestTimeout) {
             this.reqTimeout = parseInt(RED.settings.httpRequestTimeout) || 120000;
@@ -109,16 +111,24 @@ module.exports = function(RED) {
             opts.method = "POST";
             opts.headers = { "content-type": "application/json" };
 
+            if (!(typeof msg.payload === "object")) {
+                msg.payload = {}
+            }
+
             if (!msg.payload.api_key) {
                 msg.payload.api_key = node.api_key;
             }
 
             if (!msg.payload.api_token) {
                 var time = "" + (new Date()).getTime();
-                var api_token = CryptoJS.SHA1(node.api_secret + time);
+                var api_token = "" + CryptoJS.SHA1(node.api_secret + time);
 
                 msg.payload.api_token = api_token;
                 msg.payload.time = time;
+            }
+
+            if (!msg.payload.token) {
+                msg.payload.token = node.user_token;
             }
 
             var payload = JSON.stringify(msg.payload);
@@ -186,4 +196,119 @@ module.exports = function(RED) {
     }
 
     RED.nodes.registerType("blkd-send-message", SendMessage);
+
+    function SendByPostMethod(config) {
+        RED.nodes.createNode(this, config);
+        var node = this;
+        this.api_uri = config.apiUri;
+        this.api_key = config.apiKey;
+        this.api_secret = config.apiSecret;
+        this.user_token = config.userToken;
+
+        if (RED.settings.httpRequestTimeout) {
+            this.reqTimeout = parseInt(RED.settings.httpRequestTimeout) || 120000;
+        } else {
+            this.reqTimeout = 120000;
+        }
+
+        this.on('input', function(msg) {
+            var preRequestTimestamp = process.hrtime();
+            node.status({ fill: "blue", shape: "dot", text: "httpin.status.requesting" });
+            var url = _server_url + node.api_uri;
+
+            if (msg.url) {
+                url = msg.url;
+            }
+
+            var opts = urllib.parse(url);
+            opts.method = "POST";
+            opts.headers = { "content-type": "application/json" };
+
+            if (!(typeof msg.payload === "object")) {
+                msg.payload = {}
+            }
+
+            if (!msg.payload.api_key) {
+                msg.payload.api_key = node.api_key;
+            }
+
+            var time = "" + (new Date()).getTime();
+            if (!msg.payload.api_token) {
+                let api_token = "" + CryptoJS.SHA1(node.api_secret + time);
+
+                msg.payload.api_token = api_token;
+                msg.payload.time = time;
+            }
+
+            if (!msg.payload.token) {
+                msg.payload.token = node.user_token;
+            }
+
+            var payload = JSON.stringify(msg.payload);
+
+            if (opts.headers['content-length'] == null) {
+                if (Buffer.isBuffer(payload)) {
+                    opts.headers['content-length'] = payload.length;
+                } else {
+                    opts.headers['content-length'] = Buffer.byteLength(payload);
+                }
+            }
+
+            var req = https.request(opts, function(res) {
+                res.setEncoding('utf8');
+                msg.statusCode = res.statusCode;
+                msg.headers = res.headers;
+                msg.payload = "";
+
+                res.on('data', function(chunk) {
+                    msg.payload += chunk;
+                });
+
+                res.on('end', function() {
+                    if (node.metric()) {
+                        // Calculate request time
+                        var diff = process.hrtime(preRequestTimestamp);
+                        var ms = diff[0] * 1e3 + diff[1] * 1e-6;
+                        var metricRequestDurationMillis = ms.toFixed(3);
+                        node.metric("duration.millis", msg, metricRequestDurationMillis);
+                        if (res.client && res.client.bytesRead) {
+                            node.metric("size.bytes", msg, res.client.bytesRead);
+                        }
+                    }
+
+                    try {
+                        msg.payload = JSON.parse(msg.payload);
+                    } catch (e) {
+                        node.warn(RED._("httpin.errors.json-error"));
+                    }
+
+                    node.send(msg);
+                    node.status({});
+                });
+            });
+
+            req.setTimeout(node.reqTimeout, function() {
+                node.error(RED._("common.notification.errors.no-response"), msg);
+                setTimeout(function() {
+                    node.status({ fill: "red", shape: "ring", text: "common.notification.errors.no-response" });
+                }, 10);
+                req.abort();
+            });
+
+            req.on('error', function(err) {
+                node.error(err, msg);
+                msg.payload = err.toString() + " : " + url;
+                msg.statusCode = err.code;
+                node.send(msg);
+                node.status({ fill: "red", shape: "ring", text: err.code });
+            });
+
+            if (payload) {
+                req.write(payload);
+            }
+            req.end();
+        });
+    }
+
+    RED.nodes.registerType("blkd-send-by-post-method", SendByPostMethod);
 }

@@ -1,7 +1,7 @@
 <script type="text/javascript">
     RED.nodes.registerType('blkd-login', {
         category: 'Blackloud',
-        color: '#92c6de',
+        color: '#90c4e0',
         defaults: {
             serverUrl: {
                 value: "api.blackloud.com",
@@ -18,9 +18,9 @@
         },
         inputs: 1,
         outputs: 1,
-        icon: "file.png",
+        icon: "blkd-icon.png",
         label: function() {
-            return "BLKD Login: " + this.username || "BLKD Login";
+            return "Login: " + this.username || "Login";
         }
     });
 </script>
@@ -49,7 +49,7 @@
 <script type="text/javascript">
     RED.nodes.registerType('blkd-generate-tlv-command', {
         category: 'Blackloud',
-        color: '#92c6de',
+        color: '#90c4e0',
         defaults: {
             cmdType: {
                 value: "0x0001",
@@ -70,7 +70,7 @@
         },
         inputs: 1,
         outputs: 1,
-        icon: "file.png",
+        icon: "blkd-icon.png",
         label: function() {
             return "BLKD Command: " + this.cmdName || "BLKD Command";
         }
@@ -110,7 +110,7 @@
 <script type="text/javascript">
     RED.nodes.registerType('blkd-send-message', {
         category: 'Blackloud',
-        color: '#92c6de',
+        color: '#90c4e0',
         defaults: {
             apiKey: {
                 value: "",
@@ -120,13 +120,16 @@
                 value: "",
                 required: true
             },
+            userToken: {
+                value: ""
+            },
             name: {
                 value: ""
             }
         },
         inputs: 1,
         outputs: 1,
-        icon: "file.png",
+        icon: "blkd-icon.png",
         label: function() {
             return this.name || "BLKD Send Message";
         }
@@ -143,11 +146,75 @@
         <input type="text" id="node-input-apiSecret" placeholder="API Secret">
     </div>
     <div class="form-row">
+        <label for="node-input-userToken"><i class="fa fa-list"></i> User Token</label>
+        <input type="text" id="node-input-userToken" placeholder="User Token">
+    </div>
+    <div class="form-row">
         <label for="node-input-name"><i class="icon-tag"></i> Name</label>
         <input type="text" id="node-input-name" placeholder="Name">
     </div>
 </script>
 
 <script type="text/x-red" data-help-name="blkd-send-message">
+    <p>A node that can send message.</p>
+</script>
+
+<script type="text/javascript">
+    RED.nodes.registerType('blkd-send-by-post-method', {
+        category: 'Blackloud',
+        color: '#90c4e0',
+        defaults: {
+            apiUri: {
+                value: "",
+                required: true
+            },
+            apiKey: {
+                value: "",
+                required: true
+            },
+            apiSecret: {
+                value: "",
+                required: true
+            },
+            userToken: {
+                value: ""
+            },
+            name: {
+                value: ""
+            }
+        },
+        inputs: 1,
+        outputs: 1,
+        icon: "blkd-icon.png",
+        label: function() {
+            return this.name || "URI: " + this.apiUri;
+        }
+    });
+</script>
+
+<script type="text/x-red" data-template-name="blkd-send-by-post-method">
+    <div class="form-row">
+        <label for="node-input-apiUri"><i class="fa fa-list"></i> API URI</label>
+        <input type="text" id="node-input-apiUri" placeholder="/v1/user/get_device_list">
+    </div>
+    <div class="form-row">
+        <label for="node-input-apiKey"><i class="fa fa-list"></i> API Key</label>
+        <input type="text" id="node-input-apiKey" placeholder="API Key">
+    </div>
+    <div class="form-row">
+        <label for="node-input-apiSecret"><i class="fa fa-list"></i> API Secret</label>
+        <input type="text" id="node-input-apiSecret" placeholder="API Secret">
+    </div>
+    <div class="form-row">
+        <label for="node-input-userToken"><i class="fa fa-list"></i> User Token</label>
+        <input type="text" id="node-input-userToken" placeholder="User Token">
+    </div>
+    <div class="form-row">
+        <label for="node-input-name"><i class="icon-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+</script>
+
+<script type="text/x-red" data-template-name="blkd-send-by-post-method">
     <p>A node that can send message.</p>
 </script>
