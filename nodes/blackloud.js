@@ -39,11 +39,16 @@ module.exports = function(RED) {
                 _password = msg.payload.password;
             }
 
+            let path = '/v1/user/login'
+            if (msg.path) {
+                path = msg.path;
+            }
+
             // call login api
             var digestRequest = require('request-digest')(_username, _password);
             digestRequest.request({
                 host: (node.serverUrl)?"https://" + node.serverUrl:_server_url,
-                path: '/v1/user/login',
+                path: path,
                 method: 'GET',
                 port: 443,
                 json: true,
@@ -90,7 +95,6 @@ module.exports = function(RED) {
         this.api_key = config.apiKey;
         this.api_secret = config.apiSecret;
         this.user_token = config.userToken;
-        this.uri = config.uri;
 
         if (RED.settings.httpRequestTimeout) {
             this.reqTimeout = parseInt(RED.settings.httpRequestTimeout) || 120000;
@@ -200,7 +204,7 @@ module.exports = function(RED) {
     function SendByPostMethod(config) {
         RED.nodes.createNode(this, config);
         var node = this;
-        this.api_uri = config.apiUri;
+        this.api_path = config.apiPath;
         this.api_key = config.apiKey;
         this.api_secret = config.apiSecret;
         this.user_token = config.userToken;
@@ -214,7 +218,7 @@ module.exports = function(RED) {
         this.on('input', function(msg) {
             var preRequestTimestamp = process.hrtime();
             node.status({ fill: "blue", shape: "dot", text: "httpin.status.requesting" });
-            var url = _server_url + node.api_uri;
+            var url = _server_url + node.api_path;
 
             if (msg.url) {
                 url = msg.url;

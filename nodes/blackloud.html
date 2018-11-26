@@ -164,7 +164,7 @@
         category: 'Blackloud',
         color: '#90c4e0',
         defaults: {
-            apiUri: {
+            apiPath: {
                 value: "",
                 required: true
             },
@@ -187,15 +187,15 @@
         outputs: 1,
         icon: "blkd-icon.png",
         label: function() {
-            return this.name || "URI: " + this.apiUri;
+            return this.name || "URI: " + this.apiPath;
         }
     });
 </script>
 
 <script type="text/x-red" data-template-name="blkd-send-by-post-method">
     <div class="form-row">
-        <label for="node-input-apiUri"><i class="fa fa-list"></i> API URI</label>
-        <input type="text" id="node-input-apiUri" placeholder="/v1/user/get_device_list">
+        <label for="node-input-apiPath"><i class="fa fa-list"></i> API URI</label>
+        <input type="text" id="node-input-apiPath" placeholder="/v1/user/get_device_list">
     </div>
     <div class="form-row">
         <label for="node-input-apiKey"><i class="fa fa-list"></i> API Key</label>
