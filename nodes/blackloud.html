@@ -4,7 +4,7 @@
         color: '#90c4e0',
         defaults: {
             serverUrl: {
-                value: "api.blackloud.com",
+                value: "https://api.blackloud.com",
                 required: true
             },
             username: {
@@ -28,8 +28,8 @@
 <script type="text/x-red" data-template-name="blkd-login">
     <div class="form-row">
         <div class="form-row">
-                <label for="node-input-serverUrl" style="width: 145px;"><i class="fa fa-list"></i> Server URL</label>
-                <input type="text" id="node-input-serverUrl" placeholder="Server URL (ex. api.blackloud.com)" style="width: 100%;">
+            <label for="node-input-serverUrl" style="width: 145px;"><i class="fa fa-list"></i> Server URL</label>
+            <input type="text" id="node-input-serverUrl" placeholder="Server Host (ex. https://api.blackloud.com)" style="width: 100%;">
         </div>
         <div class="form-row">
             <label for="node-input-username" style="width: 145px;"><i class="fa fa-list"></i> Username or E-mail</label>
@@ -138,6 +138,10 @@
 
 <script type="text/x-red" data-template-name="blkd-send-message">
     <div class="form-row">
+        <label for="node-input-serverUrl" style="width: 145px;"><i class="fa fa-list"></i> Server URL</label>
+        <input type="text" id="node-input-serverUrl" placeholder="Server Host (ex. https://api.blackloud.com)" style="width: 100%;">
+    </div>
+    <div class="form-row">
         <label for="node-input-apiKey"><i class="fa fa-list"></i> API Key</label>
         <input type="text" id="node-input-apiKey" placeholder="API Key">
     </div>
@@ -164,6 +168,10 @@
         category: 'Blackloud',
         color: '#90c4e0',
         defaults: {
+            serverUrl: {
+                value: "https://api.blackloud.com",
+                required: true
+            },
             apiPath: {
                 value: "",
                 required: true
@@ -194,7 +202,11 @@
 
 <script type="text/x-red" data-template-name="blkd-send-by-post-method">
     <div class="form-row">
-        <label for="node-input-apiPath"><i class="fa fa-list"></i> API URI</label>
+        <label for="node-input-serverUrl" style="width: 145px;"><i class="fa fa-list"></i> Server URL</label>
+        <input type="text" id="node-input-serverUrl" placeholder="Server Host (ex. https://api.blackloud.com)" style="width: 100%;">
+    </div>
+    <div class="form-row">
+        <label for="node-input-apiPath"><i class="fa fa-list"></i> API Path</label>
         <input type="text" id="node-input-apiPath" placeholder="/v1/user/get_device_list">
     </div>
     <div class="form-row">

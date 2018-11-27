@@ -1,6 +1,4 @@
 module.exports = function(RED) {
-    let _server_url = "https://api.blackloud.com";
-
     let TlvCommand = require('../lib/tlv-command');
     var https = require("follow-redirects").https;
     var urllib = require("url");
@@ -39,15 +37,22 @@ module.exports = function(RED) {
                 _password = msg.payload.password;
             }
 
-            let path = '/v1/user/login'
+            let host = node.serverUrl
+            let path = "/v1/user/login";
             if (msg.path) {
                 path = msg.path;
+            }
+
+            if (msg.url) {
+                var opts = urllib.parse(msg.url);
+                host = opts.protocol + "//" + opts.host
+                path = path
             }
 
             // call login api
             var digestRequest = require('request-digest')(_username, _password);
             digestRequest.request({
-                host: (node.serverUrl)?"https://" + node.serverUrl:_server_url,
+                host: host,
                 path: path,
                 method: 'GET',
                 port: 443,
@@ -92,6 +97,7 @@ module.exports = function(RED) {
         RED.nodes.createNode(this, config);
         var node = this;
 
+        this.serverUrl = config.serverUrl;
         this.api_key = config.apiKey;
         this.api_secret = config.apiSecret;
         this.user_token = config.userToken;
@@ -105,7 +111,7 @@ module.exports = function(RED) {
         this.on('input', function(msg) {
             var preRequestTimestamp = process.hrtime();
             node.status({ fill: "blue", shape: "dot", text: "httpin.status.requesting" });
-            var url = _server_url + "/mec_msg/v1/send";
+            var url = node.serverUrl + "/mec_msg/v1/send";
 
             if (msg.url) {
                 url = msg.url;
@@ -204,6 +210,8 @@ module.exports = function(RED) {
     function SendByPostMethod(config) {
         RED.nodes.createNode(this, config);
         var node = this;
+
+        this.serverUrl = config.serverUrl;
         this.api_path = config.apiPath;
         this.api_key = config.apiKey;
         this.api_secret = config.apiSecret;
@@ -218,7 +226,7 @@ module.exports = function(RED) {
         this.on('input', function(msg) {
             var preRequestTimestamp = process.hrtime();
             node.status({ fill: "blue", shape: "dot", text: "httpin.status.requesting" });
-            var url = _server_url + node.api_path;
+            var url = node.serverUrl + node.api_path;
 
             if (msg.url) {
                 url = msg.url;
@@ -242,6 +250,10 @@ module.exports = function(RED) {
 
                 msg.payload.api_token = api_token;
                 msg.payload.time = time;
+            }
+
+            if (msg.payload.global_session && msg.payload.global_session.token) {
+                msg.payload.token = msg.payload.global_session.token;
             }
 
             if (!msg.payload.token) {
