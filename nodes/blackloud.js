@@ -16,16 +16,6 @@ module.exports = function(RED) {
         var context = node.context();
 
         this.on('input', function(msg) {
-            var _userInfo = context.get('userInfo');
-            var _globalSession = context.get('globalSession');
-            if (_globalSession && (new Date(_globalSession.expiration)).getTime() > (new Date()).getTime()) {
-                msg.payload = { info: _userInfo, global_session: _globalSession };
-                node.send(msg);
-                return;
-            }
-
-            context.set('userInfo', null);
-            context.set('globalSession', null);
 
             let _username = node.username;
             if (msg.payload.username) {
@@ -36,6 +26,25 @@ module.exports = function(RED) {
             if (msg.payload.password) {
                 _password = msg.payload.password;
             }
+
+            var keepSeesion = true;
+
+            var _userInfo = context.get('userInfo');
+            if (_userInfo
+                && _username.toLowerCase() != _userInfo.account.email.toLowerCase()
+                && _username.toLowerCase() != _userInfo.account.username.toLowerCase()) {
+                keepSeesion = false;
+            }
+
+            var _globalSession = context.get('globalSession');
+            if (keepSeesion && _globalSession && (new Date(_globalSession.expiration)).getTime() > (new Date()).getTime()) {
+                msg.payload = { info: _userInfo, global_session: _globalSession };
+                node.send(msg);
+                return;
+            }
+
+            context.set('userInfo', null);
+            context.set('globalSession', null);
 
             let host = node.serverUrl
             let path = "/v1/user/login";
