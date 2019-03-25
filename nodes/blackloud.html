@@ -79,26 +79,24 @@
 
 <script type="text/x-red" data-template-name="blkd-generate-tlv-command">
     <div class="form-row">
-        <div class="form-row">
-            <label for="node-input-cmdType"><i class="fa fa-list"></i> Type</label>
-            <input type="text" id="node-input-cmdType" placeholder="Type">
-        </div>
-        <div class="form-row">
-            <label for="node-input-cmdClass"><i class="fa fa-list"></i> Class</label>
-            <input type="text" id="node-input-cmdClass" placeholder="Class">
-        </div>
-        <div class="form-row">
-            <label for="node-input-cmdName"><i class="fa fa-list"></i> Command</label>
-            <input type="text" id="node-input-cmdName" placeholder="Command">
-        </div>
-        <div class="form-row" style="margin-bottom: 0px;">
-            <label for="node-input-cmdValue"><i class="fa fa-list"></i> Value</label>
-        </div>
-        <div class="form-row node-text-editor-row">
-            <div style="height: 0px; min-height: 150px;" class="node-text-editor" id="node-input-cmdValue-editor">
-                <textarea style="height: 0px; min-height: 150px; width: 100%;" class="node-text-editor" id="node-input-cmdValue" placeholder="Value" wrap="on" autocorrect="off" autocapitalize="off" spellcheck="false">
-                </textarea>
-            </div>
+        <label for="node-input-cmdType"><i class="fa fa-list"></i> Type</label>
+        <input type="text" id="node-input-cmdType" placeholder="Type">
+    </div>
+    <div class="form-row">
+        <label for="node-input-cmdClass"><i class="fa fa-list"></i> Class</label>
+        <input type="text" id="node-input-cmdClass" placeholder="Class">
+    </div>
+    <div class="form-row">
+        <label for="node-input-cmdName"><i class="fa fa-list"></i> Command</label>
+        <input type="text" id="node-input-cmdName" placeholder="Command">
+    </div>
+    <div class="form-row" style="margin-bottom: 0px;">
+        <label for="node-input-cmdValue"><i class="fa fa-list"></i> Value</label>
+    </div>
+    <div class="form-row node-text-editor-row">
+        <div style="height: 0px; min-height: 150px;" class="node-text-editor" id="node-input-cmdValue-editor">
+            <textarea style="height: 0px; min-height: 150px; width: 100%;" class="node-text-editor" id="node-input-cmdValue" placeholder="Value" wrap="on" autocorrect="off" autocapitalize="off" spellcheck="false">
+            </textarea>
         </div>
     </div>
 </script>
@@ -233,4 +231,82 @@
 
 <script type="text/x-red" data-template-name="blkd-send-by-post-method">
     <p>A node that can send message.</p>
+</script>
+
+<script type="text/javascript">
+    RED.nodes.registerType('private-key-encrypt', {
+        category: 'Blackloud',
+        color: '#90c4e0',
+        defaults: {
+            privateKey: {
+                value: "",
+                required: true
+            }
+        },
+        inputs: 1,
+        outputs: 1,
+        icon: "blkd-icon.png",
+        label: function() {
+            return this.name || "Private Key Encrypt";
+        }
+    });
+</script>
+
+<script type="text/x-red" data-template-name="private-key-encrypt">
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-list"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+    <div class="form-row">
+        <label for="node-input-privateKey"><i class="icon-tag"></i> Private Key</label>
+    </div>
+    <div class="form-row node-text-editor-row">
+        <div style="height: 0px; min-height: 150px;" class="node-text-editor" id="node-input-privateKey-editor">
+            <textarea style="height: 0px; min-height: 150px; width: 100%;" class="node-text-editor" id="node-input-privateKey" placeholder="Value" wrap="on" autocorrect="off" autocapitalize="off" spellcheck="false">
+            </textarea>
+        </div>
+    </div>
+</script>
+
+<script type="text/x-red" data-template-name="private-key-encrypt">
+    <p>A node that can encrypt message from payload by provided private key.</p>
+</script>
+
+<script type="text/javascript">
+    RED.nodes.registerType('public-key-encrypt', {
+        category: 'Blackloud',
+        color: '#90c4e0',
+        defaults: {
+            publicKey: {
+                value: "",
+                required: true
+            }
+        },
+        inputs: 1,
+        outputs: 1,
+        icon: "blkd-icon.png",
+        label: function() {
+            return this.name || "Public Key Encrypt";
+        }
+    });
+</script>
+
+<script type="text/x-red" data-template-name="public-key-encrypt">
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-list"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+    <div class="form-row">
+        <label for="node-input-publicKey"><i class="icon-tag"></i> Public Key</label>
+    </div>
+    <div class="form-row node-text-editor-row">
+        <div style="height: 0px; min-height: 150px;" class="node-text-editor" id="node-input-publicKey-editor">
+            <textarea style="height: 0px; min-height: 150px; width: 100%;" class="node-text-editor" id="node-input-publicKey" placeholder="Value" wrap="on" autocorrect="off" autocapitalize="off" spellcheck="false">
+            </textarea>
+        </div>
+    </div>
+</script>
+
+<script type="text/x-red" data-template-name="public-key-encrypt">
+    <p>A node that can encrypt message from payload by provided public key.</p>
 </script>

@@ -3,6 +3,7 @@ module.exports = function(RED) {
     var https = require("follow-redirects").https;
     var urllib = require("url");
     var CryptoJS = require("crypto-js");
+    var Crypto = require("crypto");
 
     function DoBlkdLogin(config) {
         RED.nodes.createNode(this, config);
@@ -336,4 +337,41 @@ module.exports = function(RED) {
     }
 
     RED.nodes.registerType("blkd-send-by-post-method", SendByPostMethod);
+
+    function PrivateEncryptMessage(config) {
+        RED.nodes.createNode(this, config);
+        var node = this;
+
+        this.privateKey = config.privateKey;
+
+        this.on('input', function(msg) {
+            
+            var buffer = Buffer.from(JSON.stringify(msg.payload));
+            var encrypted = Crypto.privateEncrypt(this.privateKey, buffer);
+            msg.payload = encrypted.toString('base64');
+
+            node.send(msg);
+        });
+    }
+
+    RED.nodes.registerType("private-key-encrypt", PrivateEncryptMessage);
+
+    function PublicEncryptMessage(config) {
+        RED.nodes.createNode(this, config);
+        var node = this;
+
+        this.publicKey = config.publicKey;
+
+        this.on('input', function(msg) {
+            
+            var buffer = Buffer.from(''+ msg.payload);
+            var encrypted = Crypto.publicEncrypt({ key : this.publicKey,
+                padding : Crypto.constants.RSA_PKCS1_OAEP_PADDING }, buffer);
+            msg.payload = encrypted.toString('base64');
+
+            node.send(msg);
+        });
+    }
+
+    RED.nodes.registerType("public-key-encrypt", PublicEncryptMessage);
 }
